@@ -20,6 +20,7 @@ Will be coming in future :)
 > Pull Requests: https://github.com/Eessh/mendix-nivo-responsive-line-chart/pulls
 
 ## Screenshots
+![Demo Example](./screenshots/DemoExample.png)
 ![Data Soruce](./screenshots/DataSource.png)
 ![Properties](./screenshots/Properties.png)
 ![Axis Bottom](./screenshots/AxisBottom.png)
