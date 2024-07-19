@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="addverb.nivolinechart.NivoLineChart" pluginWidget="true" needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Nivo Responsive Line Chart</name>
+    <description>Responsive Line chart ported from the Nivo charts library.</description>
+    <icon />
+    <properties>
+        <!-- Data Source -->
+        <propertyGroup caption="Data Source">
+            <!-- Data -->
+            <property key="data" type="expression" required="true">
+                <caption>Chart Data (JSON)</caption>
+                <description>The json data should be compatible with type TNivoResponsiveLineData[]. (Please see the docs)</description>
+                <returnType type="String" />
+            </property>
+
+            <!-- Legends -->
+            <property key="legends" type="expression" required="false">
+                <caption>Legends (JSON)</caption>
+                <description>The json data should be compatible with type LegendData[]. (Please see the Nivo docs)</description>
+                <returnType type="String" />
+            </property>
+
+            <!-- Theme -->
+            <property key="theme" type="expression" required="false">
+                <caption>Theme (JSON)</caption>
+                <description>The json data should be compatible with type CompleteTheme. (Please see the Nivo docs)</description>
+                <returnType type="String" />
+            </property>
+
+            <!-- System Properties -->
+            <systemProperty key="Visibility" />
+        </propertyGroup>
+
+        <!-- Properties -->
+        <propertyGroup caption="Properties">
+            <!-- Use Mesh -->
+            <property key="useMesh" type="boolean" defaultValue="true">
+                <caption>Use Mesh</caption>
+                <description>Use a voronoi mesh to detect mouse interactions.</description>
+            </property>
+
+            <!-- Enable Crosshair -->
+            <property key="enableCrosshair" type="boolean" defaultValue="true">
+                <caption>Enable Crosshair</caption>
+                <description>Dashed horizontal and vertical lines intersecting axes.</description>
+            </property>
+
+            <!-- Enable Touch Crosshair -->
+            <property key="enableTouchCrosshair" type="boolean" defaultValue="true">
+                <caption>Enable Touch Crosshair</caption>
+                <description>Dashed horizontal and vertical lines intersecting axes, when user is interacting on touch device.</description>
+            </property>
+
+            <!-- Enable Grid X -->
+            <property key="enableGridX" type="boolean" defaultValue="true">
+                <caption>Enable Grid X</caption>
+                <description>Vertical lines for each tick in x-axis.</description>
+            </property>
+
+            <!-- Enable Grid Y -->
+            <property key="enableGridY" type="boolean" defaultValue="true">
+                <caption>Enable Grid Y</caption>
+                <description>Horizontal lines for each tick in y-axis.</description>
+            </property>
+
+            <!-- Enable Point Label -->
+            <property key="enablePointLabel" type="boolean" defaultValue="false">
+                <caption>Enable Point Label</caption>
+                <description>Horizontal lines for each tick in y-axis.</description>
+            </property>
+
+            <!-- Point Label -->
+            <property key="pointLabel" type="textTemplate" required="false">
+                <caption>Point Label</caption>
+                <description>Point label display format expression. (Please see the Nivo docs)</description>
+            </property>
+
+            <!-- Point Label Y Offset -->
+            <property key="pointLabelYOffset" type="string" defaultValue="-12" required="false">
+                <caption>Point Label Y-Offset</caption>
+                <description>Label offset. (Integer value)</description>
+            </property>
+
+            <!-- Margin Top -->
+            <property key="marginTop" type="integer" defaultValue="50">
+                <caption>Margin Top</caption>
+                <description>Internal margin, gap between top of the chart and its container.</description>
+            </property>
+
+            <!-- Margin Right -->
+            <property key="marginRight" type="integer" defaultValue="110">
+                <caption>Margin Right</caption>
+                <description>Internal margin, gap between right of the chart and its container.</description>
+            </property>
+
+            <!-- Margin Bottom -->
+            <property key="marginBottom" type="integer" defaultValue="50">
+                <caption>Margin Bottom</caption>
+                <description>Internal margin, gap between bottom of the chart and its container.</description>
+            </property>
+
+            <!-- Margin Left -->
+            <property key="marginLeft" type="integer" defaultValue="60">
+                <caption>Margin Left</caption>
+                <description>Internal margin, gap between left of the chart and its container.</description>
+            </property>
+        </propertyGroup>
+
+        <!-- Axis Top -->
+        <propertyGroup caption="Axis Top">
+            <!-- Enable Axis Top -->
+            <property key="enableAxisTop" type="boolean" defaultValue="false">
+                <caption>Enable Top Axis</caption>
+                <description>Render top axis.</description>
+            </property>
+
+            <!-- Axis Top Tick Size -->
+            <property key="axisTopTickSize" type="integer" defaultValue="5">
+                <caption>Tick Size</caption>
+                <description>Size of ticks.</description>
+            </property>
+
+            <!-- Axis Top Tick Padding -->
+            <property key="axisTopTickPadding" type="integer" defaultValue="5">
+                <caption>Tick Padding</caption>
+                <description>Padding between ticks and axis label.</description>
+            </property>
+
+            <!-- Axis Top Tick Rotation -->
+            <property key="axisTopTickRotation" type="integer" defaultValue="0">
+                <caption>Tick Rotation</caption>
+                <description>Rotation angle of ticks.</description>
+            </property>
+
+            <!-- Axis Top Tick Truncate -->
+            <property key="axisTopTickTruncateAt" type="integer" defaultValue="0">
+                <caption>Truncate Tick After</caption>
+                <description>This is the maximum length of characters that will be shown in label, if label is having more characters, they will be truncated.</description>
+            </property>
+
+            <!-- Axis Top Legend -->
+            <property key="axisTopLegend" type="textTemplate" required="false">
+                <caption>Axis Legend</caption>
+                <description>Axis legend.</description>
+            </property>
+
+            <!-- Axis Top Legend Offset -->
+            <property key="axisTopLegendOffset" type="integer" defaultValue="36">
+                <caption>Legend Offset</caption>
+                <description>Axis legend offset.</description>
+            </property>
+
+            <!-- Axis Top Legend Position -->
+            <property key="axisTopLegendPosition" type="enumeration" defaultValue="middle">
+                <caption>Legend Position</caption>
+                <description>Axis legend position.</description>
+                <enumerationValues>
+                    <enumerationValue key="start">Start</enumerationValue>
+                    <enumerationValue key="middle">Middle</enumerationValue>
+                    <enumerationValue key="end">End</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <!-- Axis Right -->
+        <propertyGroup caption="Axis Right">
+            <!-- Enable Axis Top -->
+            <property key="enableAxisRight" type="boolean" defaultValue="false">
+                <caption>Enable Right Axis</caption>
+                <description>Render right axis.</description>
+            </property>
+
+            <!-- Axis Right Tick Size -->
+            <property key="axisRightTickSize" type="integer" defaultValue="5">
+                <caption>Tick Size</caption>
+                <description>Size of ticks.</description>
+            </property>
+
+            <!-- Axis Right Tick Padding -->
+            <property key="axisRightTickPadding" type="integer" defaultValue="5">
+                <caption>Tick Padding</caption>
+                <description>Padding between ticks and axis label.</description>
+            </property>
+
+            <!-- Axis Right Tick Rotation -->
+            <property key="axisRightTickRotation" type="integer" defaultValue="0">
+                <caption>Tick Rotation</caption>
+                <description>Rotation angle of ticks.</description>
+            </property>
+
+            <!-- Axis Right Tick Truncate -->
+            <property key="axisRightTickTruncateAt" type="integer" defaultValue="0">
+                <caption>Truncate Tick After</caption>
+                <description>This is the maximum length of characters that will be shown in label, if label is having more characters, they will be truncated.</description>
+            </property>
+
+            <!-- Axis Right Legend -->
+            <property key="axisRightLegend" type="textTemplate" required="false">
+                <caption>Axis Legend</caption>
+                <description>Axis legend.</description>
+            </property>
+
+            <!-- Axis Right Legend Offset -->
+            <property key="axisRightLegendOffset" type="integer" defaultValue="36">
+                <caption>Legend Offset</caption>
+                <description>Axis legend offset.</description>
+            </property>
+
+            <!-- Axis Right Legend Position -->
+            <property key="axisRightLegendPosition" type="enumeration" defaultValue="middle">
+                <caption>Legend Position</caption>
+                <description>Axis legend position.</description>
+                <enumerationValues>
+                    <enumerationValue key="start">Start</enumerationValue>
+                    <enumerationValue key="middle">Middle</enumerationValue>
+                    <enumerationValue key="end">End</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <!-- Axis Bottom -->
+        <propertyGroup caption="Axis Bottom">
+            <!-- Enable Axis Top -->
+            <property key="enableAxisBottom" type="boolean" defaultValue="true">
+                <caption>Enable Bottom Axis</caption>
+                <description>Render bottom axis.</description>
+            </property>
+
+            <!-- Axis Bottom Tick Size -->
+            <property key="axisBottomTickSize" type="integer" defaultValue="5">
+                <caption>Tick Size</caption>
+                <description>Size of ticks.</description>
+            </property>
+
+            <!-- Axis Bottom Tick Padding -->
+            <property key="axisBottomTickPadding" type="integer" defaultValue="5">
+                <caption>Tick Padding</caption>
+                <description>Padding between ticks and axis label.</description>
+            </property>
+
+            <!-- Axis Bottom Tick Rotation -->
+            <property key="axisBottomTickRotation" type="integer" defaultValue="0">
+                <caption>Tick Rotation</caption>
+                <description>Rotation angle of ticks.</description>
+            </property>
+
+            <!-- Axis Bottom Tick Truncate -->
+            <property key="axisBottomTickTruncateAt" type="integer" defaultValue="0">
+                <caption>Truncate Tick After</caption>
+                <description>This is the maximum length of characters that will be shown in label, if label is having more characters, they will be truncated.</description>
+            </property>
+
+            <!-- Axis Bottom Legend -->
+            <property key="axisBottomLegend" type="textTemplate" required="false">
+                <caption>Axis Legend</caption>
+                <description>Axis legend.</description>
+            </property>
+
+            <!-- Axis Bottom Legend Offset -->
+            <property key="axisBottomLegendOffset" type="integer" defaultValue="36">
+                <caption>Legend Offset</caption>
+                <description>Axis legend offset.</description>
+            </property>
+
+            <!-- Axis Bottom Legend Position -->
+            <property key="axisBottomLegendPosition" type="enumeration" defaultValue="middle">
+                <caption>Legend Position</caption>
+                <description>Axis legend position.</description>
+                <enumerationValues>
+                    <enumerationValue key="start">Start</enumerationValue>
+                    <enumerationValue key="middle">Middle</enumerationValue>
+                    <enumerationValue key="end">End</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <!-- Axis Left -->
+        <propertyGroup caption="Axis Left">
+            <!-- Enable Axis Left -->
+            <property key="enableAxisLeft" type="boolean" defaultValue="true">
+                <caption>Enable Left Axis</caption>
+                <description>Render left axis.</description>
+            </property>
+
+            <!-- Axis Left Tick Size -->
+            <property key="axisLeftTickSize" type="integer" defaultValue="5">
+                <caption>Tick Size</caption>
+                <description>Size of ticks.</description>
+            </property>
+
+            <!-- Axis Left Tick Padding -->
+            <property key="axisLeftTickPadding" type="integer" defaultValue="5">
+                <caption>Tick Padding</caption>
+                <description>Padding between ticks and axis label.</description>
+            </property>
+
+            <!-- Axis Left Tick Rotation -->
+            <property key="axisLeftTickRotation" type="integer" defaultValue="0">
+                <caption>Tick Rotation</caption>
+                <description>Rotation angle of ticks.</description>
+            </property>
+
+            <!-- Axis Left Tick Truncate -->
+            <property key="axisLeftTickTruncateAt" type="integer" defaultValue="0">
+                <caption>Truncate Tick After</caption>
+                <description>This is the maximum length of characters that will be shown in label, if label is having more characters, they will be truncated.</description>
+            </property>
+
+            <!-- Axis Left Legend -->
+            <property key="axisLeftLegend" type="textTemplate" required="false">
+                <caption>Axis Legend</caption>
+                <description>Axis legend.</description>
+            </property>
+
+            <!-- Axis Left Legend Offset -->
+            <property key="axisLeftLegendOffset" type="integer" defaultValue="36">
+                <caption>Legend Offset</caption>
+                <description>Axis legend offset.</description>
+            </property>
+
+            <!-- Axis Left Legend Position -->
+            <property key="axisLeftLegendPosition" type="enumeration" defaultValue="middle">
+                <caption>Legend Position</caption>
+                <description>Axis legend position.</description>
+                <enumerationValues>
+                    <enumerationValue key="start">Start</enumerationValue>
+                    <enumerationValue key="middle">Middle</enumerationValue>
+                    <enumerationValue key="end">End</enumerationValue>
+                </enumerationValues>
+            </property>
+        </propertyGroup>
+
+        <!-- X Scale Spec -->
+        <propertyGroup caption="X Scale Spec">
+            <!-- X Scale Spec Type -->
+            <property key="xScaleSpecType" type="enumeration" defaultValue="point" required="true">
+                <caption>Type</caption>
+                <description>Scale type</description>
+                <enumerationValues>
+                    <enumerationValue key="linear">Linear</enumerationValue>
+                    <enumerationValue key="log">Log</enumerationValue>
+                    <enumerationValue key="symlog">Sym Log</enumerationValue>
+                    <enumerationValue key="point">Point</enumerationValue>
+                    <enumerationValue key="band">Band</enumerationValue>
+                    <enumerationValue key="time">Time</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Base -->
+            <property key="xScaleSpecBase" type="integer" defaultValue="2">
+                <caption>Base</caption>
+                <description>Logs's base. (This should be a positive number)</description>
+            </property>
+
+            <!-- X Scale Spec Constant -->
+            <property key="xScaleSpecConstant" type="integer" defaultValue="1">
+                <caption>Constant</caption>
+                <description>Constant value used in the symmetrical logarithmic scale. (This should be a positive number)</description>
+            </property>
+
+            <!-- X Scale Spec Round -->
+            <property key="xScaleSpecRound" type="boolean" defaultValue="true">
+                <caption>Round</caption>
+                <description></description>
+            </property>
+
+            <!-- X Scale Spec Format Type -->
+            <property key="xScaleSpecFormatType" type="enumeration" defaultValue="native">
+                <caption>Format</caption>
+                <description>Time format.</description>
+                <enumerationValues>
+                    <enumerationValue key="native">Native</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Format Value -->
+            <property key="xScaleSpecFormatValue" type="string" defaultValue="dd-mm-yy">
+                <caption>Format String</caption>
+                <description>Specify format string.</description>
+            </property>
+
+            <!-- X Scale Spec Precision -->
+            <property key="xScaleSpecPrecision" type="enumeration" defaultValue="minute">
+                <caption>Precision</caption>
+                <description>Level of precision.</description>
+                <enumerationValues>
+                    <enumerationValue key="millisecond">Millisecond</enumerationValue>
+                    <enumerationValue key="second">Second</enumerationValue>
+                    <enumerationValue key="minute">Minute</enumerationValue>
+                    <enumerationValue key="hour">Hour</enumerationValue>
+                    <enumerationValue key="day">Day</enumerationValue>
+                    <enumerationValue key="month">Month</enumerationValue>
+                    <enumerationValue key="year">Year</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Min Type -->
+            <property key="xScaleSpecMinType" type="enumeration" defaultValue="auto">
+                <caption>Minimum Value</caption>
+                <description>Minimum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Min Value -->
+            <property key="xScaleSpecMinValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>Specify minimum value.</description>
+            </property>
+
+            <!-- X Scale Spec Time Min Type -->
+            <property key="xScaleSpecTimeMinType" type="enumeration" defaultValue="auto">
+                <caption>Minimum Value</caption>
+                <description>Minimum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Time Min Value -->
+            <property key="xScaleSpecTimeMinValue" type="string" required="false">
+                <caption>Date</caption>
+                <description>Specify minimum date.</description>
+            </property>
+
+            <!-- X Scale Spec Max Type -->
+            <property key="xScaleSpecMaxType" type="enumeration" defaultValue="auto">
+                <caption>Maximum Value</caption>
+                <description>Maximum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Max Value -->
+            <property key="xScaleSpecMaxValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>Specify maximum value.</description>
+            </property>
+
+            <!-- X Scale Spec Time Max Type -->
+            <property key="xScaleSpecTimeMaxType" type="enumeration" defaultValue="auto">
+                <caption>Maximum Value</caption>
+                <description>Maximum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Time Max Value -->
+            <property key="xScaleSpecTimeMaxValue" type="string" required="false">
+                <caption>Date</caption>
+                <description>Specify maximum date.</description>
+            </property>
+
+            <!-- X Scale Spec Stacked -->
+            <property key="xScaleSpecStacked" type="boolean" defaultValue="false">
+                <caption>Stacked</caption>
+                <description></description>
+            </property>
+
+            <!-- X Scale Spec Reverse -->
+            <property key="xScaleSpecReverse" type="boolean" defaultValue="false">
+                <caption>Reverse</caption>
+                <description></description>
+            </property>
+
+            <!-- X Scale Spec Clamp -->
+            <property key="xScaleSpecClamp" type="boolean" defaultValue="false">
+                <caption>Clamp</caption>
+                <description></description>
+            </property>
+
+            <!-- X Scale Spec Use UTC -->
+            <property key="xScaleSpecUseUTC" type="boolean" defaultValue="false">
+                <caption>Use UTC</caption>
+                <description></description>
+            </property>
+
+            <!-- X Scale Spec Nice Type -->
+            <property key="xScaleSpecNiceType" type="enumeration" defaultValue="true">
+                <caption>Nice</caption>
+                <description>The scale domain is adjusted so that it ends on a "round" value, such as a multiple of 10, 100, etc. This helps in avoiding awkward axis ticks that don't align neatly with typical human-readable values.</description>
+                <enumerationValues>
+                    <enumerationValue key="true">Yes</enumerationValue>
+                    <enumerationValue key="false">No</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- X Scale Spec Nice Value -->
+            <property key="xScaleSpecNiceValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>The scale will attempt to round its domain to the nearest multiple of this number. This is useful for ensuring that ticks and grid lines on the axis align with specific intervals.</description>
+            </property>
+
+            <!-- X Scale Spec Time Nice -->
+            <property key="xScaleSpecTimeNice" type="boolean" defaultValue="true">
+                <caption>Nice</caption>
+                <description></description>
+            </property>
+        </propertyGroup>
+
+        <!-- Y Scale Spec -->
+        <propertyGroup caption="Y Scale Spec">
+            <!-- X Scale Spec Type -->
+            <property key="yScaleSpecType" type="enumeration" defaultValue="point" required="true">
+                <caption>Type</caption>
+                <description>Scale type</description>
+                <enumerationValues>
+                    <enumerationValue key="linear">Linear</enumerationValue>
+                    <enumerationValue key="log">Log</enumerationValue>
+                    <enumerationValue key="symlog">Sym Log</enumerationValue>
+                    <enumerationValue key="point">Point</enumerationValue>
+                    <enumerationValue key="band">Band</enumerationValue>
+                    <enumerationValue key="time">Time</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Base -->
+            <property key="yScaleSpecBase" type="integer" defaultValue="2">
+                <caption>Base</caption>
+                <description>Logs's base. (This should be a positive number)</description>
+            </property>
+
+            <!-- Y Scale Spec Constant -->
+            <property key="yScaleSpecConstant" type="integer" defaultValue="1">
+                <caption>Constant</caption>
+                <description>Constant value used in the symmetrical logarithmic scale. (This should be a positive number)</description>
+            </property>
+
+            <!-- Y Scale Spec Round -->
+            <property key="yScaleSpecRound" type="boolean" defaultValue="true">
+                <caption>Round</caption>
+                <description></description>
+            </property>
+
+            <!-- Y Scale Spec Format Type -->
+            <property key="yScaleSpecFormatType" type="enumeration" defaultValue="native">
+                <caption>Format</caption>
+                <description>Time format.</description>
+                <enumerationValues>
+                    <enumerationValue key="native">Native</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Format Value -->
+            <property key="yScaleSpecFormatValue" type="string" defaultValue="dd-mm-yy">
+                <caption>Format String</caption>
+                <description>Specify format string.</description>
+            </property>
+
+            <!-- Y Scale Spec Precision -->
+            <property key="yScaleSpecPrecision" type="enumeration" defaultValue="minute">
+                <caption>Precision</caption>
+                <description>Level of precision.</description>
+                <enumerationValues>
+                    <enumerationValue key="millisecond">Millisecond</enumerationValue>
+                    <enumerationValue key="second">Second</enumerationValue>
+                    <enumerationValue key="minute">Minute</enumerationValue>
+                    <enumerationValue key="hour">Hour</enumerationValue>
+                    <enumerationValue key="day">Day</enumerationValue>
+                    <enumerationValue key="month">Month</enumerationValue>
+                    <enumerationValue key="year">Year</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Min Type -->
+            <property key="yScaleSpecMinType" type="enumeration" defaultValue="auto">
+                <caption>Minimum Value</caption>
+                <description>Minimum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Min Value -->
+            <property key="yScaleSpecMinValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>Specify minimum value.</description>
+            </property>
+
+            <!-- Y Scale Spec Time Min Type -->
+            <property key="yScaleSpecTimeMinType" type="enumeration" defaultValue="auto">
+                <caption>Minimum Value</caption>
+                <description>Minimum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Time Min Value -->
+            <property key="yScaleSpecTimeMinValue" type="string" required="false">
+                <caption>Date</caption>
+                <description>Specify minimum date.</description>
+            </property>
+
+            <!-- Y Scale Spec Max Type -->
+            <property key="yScaleSpecMaxType" type="enumeration" defaultValue="auto">
+                <caption>Maximum Value</caption>
+                <description>Maximum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Max Value -->
+            <property key="yScaleSpecMaxValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>Specify maximum value.</description>
+            </property>
+
+            <!-- Y Scale Spec Time Max Type -->
+            <property key="yScaleSpecTimeMaxType" type="enumeration" defaultValue="auto">
+                <caption>Maximum Value</caption>
+                <description>Maximum value of the scale.</description>
+                <enumerationValues>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="string">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Time Max Value -->
+            <property key="yScaleSpecTimeMaxValue" type="string" required="false">
+                <caption>Date</caption>
+                <description>Specify maximum date.</description>
+            </property>
+
+            <!-- Y Scale Spec Stacked -->
+            <property key="yScaleSpecStacked" type="boolean" defaultValue="false">
+                <caption>Stacked</caption>
+                <description></description>
+            </property>
+
+            <!-- Y Scale Spec Reverse -->
+            <property key="yScaleSpecReverse" type="boolean" defaultValue="false">
+                <caption>Reverse</caption>
+                <description></description>
+            </property>
+
+            <!-- Y Scale Spec Clamp -->
+            <property key="yScaleSpecClamp" type="boolean" defaultValue="false">
+                <caption>Clamp</caption>
+                <description></description>
+            </property>
+
+            <!-- Y Scale Spec Use UTC -->
+            <property key="yScaleSpecUseUTC" type="boolean" defaultValue="false">
+                <caption>Use UTC</caption>
+                <description></description>
+            </property>
+
+            <!-- Y Scale Spec Nice Type -->
+            <property key="yScaleSpecNiceType" type="enumeration" defaultValue="true">
+                <caption>Nice</caption>
+                <description>The scale domain is adjusted so that it ends on a "round" value, such as a multiple of 10, 100, etc. This helps in avoiding awkward axis ticks that don't align neatly with typical human-readable values.</description>
+                <enumerationValues>
+                    <enumerationValue key="true">Yes</enumerationValue>
+                    <enumerationValue key="false">No</enumerationValue>
+                    <enumerationValue key="number">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
+            <!-- Y Scale Spec Nice Value -->
+            <property key="yScaleSpecNiceValue" type="integer" defaultValue="0">
+                <caption>Value</caption>
+                <description>The scale will attempt to round its domain to the nearest multiple of this number. This is useful for ensuring that ticks and grid lines on the axis align with specific intervals.</description>
+            </property>
+
+            <!-- Y Scale Spec Time Nice -->
+            <property key="yScaleSpecTimeNice" type="boolean" defaultValue="true">
+                <caption>Nice</caption>
+                <description></description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
