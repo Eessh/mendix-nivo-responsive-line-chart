@@ -368,7 +368,7 @@ export function getProperties(
             );
         }
     } else if (_values.xScaleSpecType === "point") {
-        xScaleSpecPropGroup.properties!.splice(1, xScaleSpecPropGroup.properties!.length - 1);
+        xScaleSpecPropGroup.properties!.splice(1, xScaleSpecPropGroup.properties!.length - 2);
     } else if (_values.xScaleSpecType === "band") {
         xScaleSpecPropGroup.properties!.splice(
             xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecBase"),
@@ -740,7 +740,7 @@ export function getProperties(
             );
         }
     } else if (_values.yScaleSpecType === "point") {
-        yScaleSpecPropGroup.properties!.splice(1, yScaleSpecPropGroup.properties!.length - 1);
+        yScaleSpecPropGroup.properties!.splice(1, yScaleSpecPropGroup.properties!.length - 2);
     } else if (_values.yScaleSpecType === "band") {
         yScaleSpecPropGroup.properties!.splice(
             yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecBase"),

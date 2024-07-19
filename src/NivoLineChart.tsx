@@ -150,6 +150,8 @@ export function NivoLineChart(props: NivoLineChartContainerProps): ReactElement 
                 bottom: props.marginBottom,
                 left: props.marginLeft
             }}
+            xFormat={props.xScaleFormat}
+            yFormat={props.yScaleFormat}
             useMesh={props.useMesh}
             enableCrosshair={props.enableCrosshair}
             enableTouchCrosshair={props.enableTouchCrosshair}

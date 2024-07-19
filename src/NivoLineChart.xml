@@ -509,6 +509,12 @@
                 <caption>Nice</caption>
                 <description></description>
             </property>
+
+            <!-- X Scale Format -->
+            <property key="xScaleFormat" type="string" required="false">
+                <caption>Format</caption>
+                <description>Optional formatter for x values. (Please see Nivo docs for formats)</description>
+            </property>
         </propertyGroup>
 
         <!-- Y Scale Spec -->
@@ -685,6 +691,12 @@
             <property key="yScaleSpecTimeNice" type="boolean" defaultValue="true">
                 <caption>Nice</caption>
                 <description></description>
+            </property>
+
+            <!-- Y Scale Format -->
+            <property key="yScaleFormat" type="string" required="false">
+                <caption>Format</caption>
+                <description>Optional formatter for y values. (Please see Nivo docs for formats)</description>
             </property>
         </propertyGroup>
     </properties>

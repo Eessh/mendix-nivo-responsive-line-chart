@@ -46,6 +46,8 @@ type NivoResponsiveLineProps = {
     xScale?: ScaleSpec | undefined;
     yScale?: ScaleSpec | undefined;
     legends?: LegendProps[] | undefined;
+    xFormat?: string | undefined;
+    yFormat?: string | undefined;
 };
 
 const DefaultProps: NivoResponsiveLineProps = {
@@ -381,7 +383,8 @@ const NivoResponsiveLine = (props: NivoResponsiveLineProps): ReactElement => {
             margin={props.margin ?? DefaultProps.margin}
             xScale={props.xScale ?? DefaultProps.xScale}
             yScale={props.yScale ?? DefaultProps.yScale}
-            yFormat=" >-.2f"
+            xFormat={props.xFormat}
+            yFormat={props.yFormat}
             axisTop={props.axisTop}
             axisRight={props.axisRight}
             axisBottom={props.axisBottom}

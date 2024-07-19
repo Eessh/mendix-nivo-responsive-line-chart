@@ -120,6 +120,7 @@ export interface NivoLineChartContainerProps {
     xScaleSpecNiceType: XScaleSpecNiceTypeEnum;
     xScaleSpecNiceValue: number;
     xScaleSpecTimeNice: boolean;
+    xScaleFormat: string;
     yScaleSpecType: YScaleSpecTypeEnum;
     yScaleSpecBase: number;
     yScaleSpecConstant: number;
@@ -142,6 +143,7 @@ export interface NivoLineChartContainerProps {
     yScaleSpecNiceType: YScaleSpecNiceTypeEnum;
     yScaleSpecNiceValue: number;
     yScaleSpecTimeNice: boolean;
+    yScaleFormat: string;
 }
 
 export interface NivoLineChartPreviewProps {
@@ -223,6 +225,7 @@ export interface NivoLineChartPreviewProps {
     xScaleSpecNiceType: XScaleSpecNiceTypeEnum;
     xScaleSpecNiceValue: number | null;
     xScaleSpecTimeNice: boolean;
+    xScaleFormat: string;
     yScaleSpecType: YScaleSpecTypeEnum;
     yScaleSpecBase: number | null;
     yScaleSpecConstant: number | null;
@@ -245,4 +248,5 @@ export interface NivoLineChartPreviewProps {
     yScaleSpecNiceType: YScaleSpecNiceTypeEnum;
     yScaleSpecNiceValue: number | null;
     yScaleSpecTimeNice: boolean;
+    yScaleFormat: string;
 }
