@@ -17,16 +17,44 @@
                 <returnType type="String" />
             </property>
 
+            <!-- Legends Type -->
+            <property key="legendsType" type="enumeration" defaultValue="default">
+                <caption>Legends (JSON)</caption>
+                <description>Legends for the chart.</description>
+                <enumerationValues>
+                    <enumerationValue key="default">Default</enumerationValue>
+                    <enumerationValue key="no">No</enumerationValue>
+                    <enumerationValue key="specify">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
             <!-- Legends -->
             <property key="legends" type="expression" required="false">
-                <caption>Legends (JSON)</caption>
+                <caption>Legends JSON Data</caption>
                 <description>The json data should be compatible with type LegendData[]. (Please see the Nivo docs)</description>
                 <returnType type="String" />
             </property>
 
+            <!-- Markers -->
+            <property key="markers" type="expression" required="false">
+                <caption>Markers (JSON)</caption>
+                <description>The json data should be compatible with type CartesianMarkerProps[]. (Please see the Nivo docs)</description>
+                <returnType type="String" />
+            </property>
+
+            <!-- Theme Type -->
+            <property key="themeType" type="enumeration" defaultValue="default">
+                <caption>Theme (JSON)</caption>
+                <description>Theme for the chart.</description>
+                <enumerationValues>
+                    <enumerationValue key="default">Default</enumerationValue>
+                    <enumerationValue key="specify">Specify</enumerationValue>
+                </enumerationValues>
+            </property>
+
             <!-- Theme -->
             <property key="theme" type="expression" required="false">
-                <caption>Theme (JSON)</caption>
+                <caption>Theme JSON Data</caption>
                 <description>The json data should be compatible with type CompleteTheme. (Please see the Nivo docs)</description>
                 <returnType type="String" />
             </property>
@@ -67,6 +95,17 @@
                 <description>Horizontal lines for each tick in y-axis.</description>
             </property>
 
+            <!-- Enable Slices -->
+            <property key="enableSlices" type="enumeration" defaultValue="no">
+                <caption>Enable Slices</caption>
+                <description>Enabling this will show the information of all the trends at hovered point on the axis.</description>
+                <enumerationValues>
+                    <enumerationValue key="x">X-axis</enumerationValue>
+                    <enumerationValue key="y">Y-axis</enumerationValue>
+                    <enumerationValue key="no">No</enumerationValue>
+                </enumerationValues>
+            </property>
+
             <!-- Enable Point Label -->
             <property key="enablePointLabel" type="boolean" defaultValue="false">
                 <caption>Enable Point Label</caption>
@@ -83,6 +122,12 @@
             <property key="pointLabelYOffset" type="string" defaultValue="-12" required="false">
                 <caption>Point Label Y-Offset</caption>
                 <description>Label offset. (Integer value)</description>
+            </property>
+
+            <!-- Animate -->
+            <property key="animate" type="boolean" defaultValue="true">
+                <caption>Animate</caption>
+                <description>Animate tooltips and when data changes.</description>
             </property>
 
             <!-- Margin Top -->

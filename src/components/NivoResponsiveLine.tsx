@@ -1,6 +1,6 @@
 import { ReactElement, createElement } from "react";
 import { Datum, ResponsiveLine } from "@nivo/line";
-import { Box, CompleteTheme } from "@nivo/core";
+import { Box, CompleteTheme, CartesianMarkerProps } from "@nivo/core";
 import { AxisProps } from "@nivo/axes";
 import { ScaleSpec } from "@nivo/scales";
 import { LegendProps } from "@nivo/legends";
@@ -28,6 +28,7 @@ export type TNivoTheme = Partial<{
 type NivoResponsiveLineProps = {
     data?: TNivoResponsiveLineData[];
     theme?: TNivoTheme;
+    markers?: CartesianMarkerProps[];
     margin?: Box;
     useMesh?: boolean;
     enableCrosshair?: boolean;
@@ -39,15 +40,17 @@ type NivoResponsiveLineProps = {
     pointLabelYOffset?: number;
     enableGridX?: boolean;
     enableGridY?: boolean;
+    enableSlices?: false | "x" | "y";
     axisTop?: AxisProps | null;
     axisRight?: AxisProps | null;
     axisBottom?: AxisProps | null;
     axisLeft?: AxisProps | null;
-    xScale?: ScaleSpec | undefined;
-    yScale?: ScaleSpec | undefined;
-    legends?: LegendProps[] | undefined;
-    xFormat?: string | undefined;
-    yFormat?: string | undefined;
+    xScale?: ScaleSpec;
+    yScale?: ScaleSpec;
+    legends?: LegendProps[] | null;
+    xFormat?: string;
+    yFormat?: string;
+    animate: boolean;
 };
 
 const DefaultProps: NivoResponsiveLineProps = {
@@ -339,6 +342,7 @@ const DefaultProps: NivoResponsiveLineProps = {
     pointLabelYOffset: 0,
     enableGridX: true,
     enableGridY: true,
+    enableSlices: false,
     xScale: { type: "point" },
     yScale: {
         type: "linear",
@@ -372,7 +376,8 @@ const DefaultProps: NivoResponsiveLineProps = {
                 }
             ]
         }
-    ]
+    ],
+    animate: true
 };
 
 const NivoResponsiveLine = (props: NivoResponsiveLineProps): ReactElement => {
@@ -401,7 +406,16 @@ const NivoResponsiveLine = (props: NivoResponsiveLineProps): ReactElement => {
             useMesh={props.useMesh ?? DefaultProps.useMesh}
             enableGridX={props.enableGridX ?? DefaultProps.enableGridX}
             enableGridY={props.enableGridY ?? DefaultProps.enableGridY}
-            legends={props.legends ?? DefaultProps.legends}
+            legends={
+                props.legends === undefined
+                    ? DefaultProps.legends!
+                    : props.legends === null
+                    ? undefined
+                    : props.legends
+            }
+            enableSlices={props.enableSlices ?? DefaultProps.enableSlices}
+            markers={props.markers}
+            animate={props.animate}
         />
     );
 };

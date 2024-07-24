@@ -6,6 +6,12 @@
 import { CSSProperties } from "react";
 import { DynamicValue } from "mendix";
 
+export type LegendsTypeEnum = "default" | "no" | "specify";
+
+export type ThemeTypeEnum = "default" | "specify";
+
+export type EnableSlicesEnum = "x" | "y" | "no";
+
 export type AxisTopLegendPositionEnum = "start" | "middle" | "end";
 
 export type AxisRightLegendPositionEnum = "start" | "middle" | "end";
@@ -52,16 +58,21 @@ export interface NivoLineChartContainerProps {
     style?: CSSProperties;
     tabIndex?: number;
     data: DynamicValue<string>;
+    legendsType: LegendsTypeEnum;
     legends?: DynamicValue<string>;
+    markers?: DynamicValue<string>;
+    themeType: ThemeTypeEnum;
     theme?: DynamicValue<string>;
     useMesh: boolean;
     enableCrosshair: boolean;
     enableTouchCrosshair: boolean;
     enableGridX: boolean;
     enableGridY: boolean;
+    enableSlices: EnableSlicesEnum;
     enablePointLabel: boolean;
     pointLabel?: DynamicValue<string>;
     pointLabelYOffset: string;
+    animate: boolean;
     marginTop: number;
     marginRight: number;
     marginBottom: number;
@@ -157,16 +168,21 @@ export interface NivoLineChartPreviewProps {
     readOnly: boolean;
     renderMode?: "design" | "xray" | "structure";
     data: string;
+    legendsType: LegendsTypeEnum;
     legends: string;
+    markers: string;
+    themeType: ThemeTypeEnum;
     theme: string;
     useMesh: boolean;
     enableCrosshair: boolean;
     enableTouchCrosshair: boolean;
     enableGridX: boolean;
     enableGridY: boolean;
+    enableSlices: EnableSlicesEnum;
     enablePointLabel: boolean;
     pointLabel: string;
     pointLabelYOffset: string;
+    animate: boolean;
     marginTop: number | null;
     marginRight: number | null;
     marginBottom: number | null;

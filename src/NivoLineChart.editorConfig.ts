@@ -104,42 +104,56 @@ export function getProperties(
     defaultProperties: Properties /* , target: Platform*/
 ): Properties {
     // Do the values manipulation here to control the visibility of properties in Studio and Studio Pro conditionally.
-    /* Example
-    if (values.myProperty === "custom") {
-        delete defaultProperties.properties.myOtherProperty;
-    }
-    */
 
+    // Data Source
+    const datasourcePropGroup: PropertyGroup = defaultProperties.find(
+        propGroup => propGroup.caption === "Data Source"
+    )!;
+    const datasourcePropsToRemove: string[] = [];
+    if (_values.legendsType !== "specify") {
+        datasourcePropsToRemove.push("legends");
+    }
+    if (_values.themeType !== "specify") {
+        datasourcePropsToRemove.push("theme");
+    }
+    datasourcePropGroup.properties = datasourcePropGroup.properties!.filter(
+        prop => !datasourcePropsToRemove.includes(prop.key)
+    );
+
+    // Properties
     if (!_values.enablePointLabel) {
         const propertiesPropGroup: PropertyGroup = defaultProperties.find(
             propGroup => propGroup.caption === "Properties"
         )!;
-        propertiesPropGroup.properties!.splice(
-            propertiesPropGroup.properties!.findIndex(prop => prop.key === "pointLabel"),
-            1
-        );
-        propertiesPropGroup.properties!.splice(
-            propertiesPropGroup.properties!.findIndex(prop => prop.key === "pointLabelYOffset"),
-            1
+        const propertiesPropsToRemove = ["pointLabel", "pointLabelYOffset"];
+        propertiesPropGroup.properties = propertiesPropGroup.properties!.filter(
+            prop => !propertiesPropsToRemove.includes(prop.key)
         );
     }
 
+    // Axis Top
     if (!_values.enableAxisTop) {
         const axisTopPropGroup: PropertyGroup = defaultProperties.find(propGroup => propGroup.caption === "Axis Top")!;
         axisTopPropGroup.properties!.splice(1, axisTopPropGroup.properties!.length - 1);
     }
+
+    // Axis Right
     if (!_values.enableAxisRight) {
         const axisRightPropGroup: PropertyGroup = defaultProperties.find(
             propGroup => propGroup.caption === "Axis Right"
         )!;
         axisRightPropGroup.properties!.splice(1, axisRightPropGroup.properties!.length - 1);
     }
+
+    // Axis Bottom
     if (!_values.enableAxisBottom) {
         const axisBottomPropGroup: PropertyGroup = defaultProperties.find(
             propGroup => propGroup.caption === "Axis Bottom"
         )!;
         axisBottomPropGroup.properties!.splice(1, axisBottomPropGroup.properties!.length - 1);
     }
+
+    // Axis Left
     if (!_values.enableAxisLeft) {
         const axisLeftPropGroup: PropertyGroup = defaultProperties.find(
             propGroup => propGroup.caption === "Axis Left"
@@ -147,749 +161,271 @@ export function getProperties(
         axisLeftPropGroup.properties!.splice(1, axisLeftPropGroup.properties!.length - 1);
     }
 
+    // X Scale Spec
     const xScaleSpecPropGroup: PropertyGroup = defaultProperties.find(
         propGroup => propGroup.caption === "X Scale Spec"
     )!;
+    let xScaleSpecPropsToRemove: string[] = [];
     if (_values.xScaleSpecType === "linear") {
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecBase"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecConstant"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecRound"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecPrecision"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecUseUTC"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeNice"),
-            1
-        );
+        xScaleSpecPropsToRemove = xScaleSpecPropsToRemove.concat([
+            "xScaleSpecBase",
+            "xScaleSpecConstant",
+            "xScaleSpecRound",
+            "xScaleSpecFormatType",
+            "xScaleSpecFormatValue",
+            "xScaleSpecPrecision",
+            "xScaleSpecTimeMinType",
+            "xScaleSpecTimeMinValue",
+            "xScaleSpecTimeMaxType",
+            "xScaleSpecTimeMaxValue",
+            "xScaleSpecUseUTC",
+            "xScaleSpecTimeNice"
+        ]);
         if (_values.xScaleSpecMinType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMinValue");
         }
         if (_values.xScaleSpecMaxType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMaxValue");
         }
         if (_values.xScaleSpecNiceType === "true" || _values.xScaleSpecNiceType === "false") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecNiceValue");
         }
     } else if (_values.xScaleSpecType === "log") {
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecConstant"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecRound"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecPrecision"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecStacked"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecReverse"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecClamp"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecUseUTC"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeNice"),
-            1
-        );
+        xScaleSpecPropsToRemove = xScaleSpecPropsToRemove.concat([
+            "xScaleSpecConstant",
+            "xScaleSpecRound",
+            "xScaleSpecFormatType",
+            "xScaleSpecFormatValue",
+            "xScaleSpecPrecision",
+            "xScaleSpecTimeMinType",
+            "xScaleSpecTimeMinValue",
+            "xScaleSpecTimeMaxType",
+            "xScaleSpecTimeMaxValue",
+            "xScaleSpecStacked",
+            "xScaleSpecReverse",
+            "xScaleSpecClamp",
+            "xScaleSpecUseUTC",
+            "xScaleSpecNiceType",
+            "xScaleSpecNiceValue",
+            "xScaleSpecTimeNice"
+        ]);
         if (_values.xScaleSpecMinType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMinValue");
         }
         if (_values.xScaleSpecMaxType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMaxValue");
         }
     } else if (_values.xScaleSpecType === "symlog") {
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecBase"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecRound"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecPrecision"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecStacked"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecClamp"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecUseUTC"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeNice"),
-            1
-        );
+        xScaleSpecPropsToRemove = xScaleSpecPropsToRemove.concat([
+            "xScaleSpecBase",
+            "xScaleSpecRound",
+            "xScaleSpecFormatType",
+            "xScaleSpecFormatValue",
+            "xScaleSpecPrecision",
+            "xScaleSpecTimeMinType",
+            "xScaleSpecTimeMinValue",
+            "xScaleSpecTimeMaxType",
+            "xScaleSpecTimeMaxValue",
+            "xScaleSpecStacked",
+            "xScaleSpecClamp",
+            "xScaleSpecUseUTC",
+            "xScaleSpecNiceType",
+            "xScaleSpecNiceValue",
+            "xScaleSpecTimeNice"
+        ]);
         if (_values.xScaleSpecMinType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMinValue");
         }
         if (_values.xScaleSpecMaxType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecMaxValue");
         }
     } else if (_values.xScaleSpecType === "point") {
         xScaleSpecPropGroup.properties!.splice(1, xScaleSpecPropGroup.properties!.length - 2);
     } else if (_values.xScaleSpecType === "band") {
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecBase"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecConstant"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecPrecision"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecStacked"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecReverse"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecClamp"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecUseUTC"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeNice"),
-            1
-        );
+        xScaleSpecPropsToRemove = xScaleSpecPropsToRemove.concat([
+            "xScaleSpecBase",
+            "xScaleSpecConstant",
+            "xScaleSpecFormatType",
+            "xScaleSpecFormatValue",
+            "xScaleSpecPrecision",
+            "xScaleSpecMinType",
+            "xScaleSpecMinValue",
+            "xScaleSpecMaxType",
+            "xScaleSpecMaxValue",
+            "xScaleSpecTimeMinType",
+            "xScaleSpecTimeMinValue",
+            "xScaleSpecTimeMaxType",
+            "xScaleSpecTimeMaxValue",
+            "xScaleSpecStacked",
+            "xScaleSpecReverse",
+            "xScaleSpecClamp",
+            "xScaleSpecUseUTC",
+            "xScaleSpecNiceType",
+            "xScaleSpecNiceValue",
+            "xScaleSpecTimeNice"
+        ]);
     } else {
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecBase"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecConstant"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecRound"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMinValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecMaxValue"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecStacked"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecReverse"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecClamp"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceType"),
-            1
-        );
-        xScaleSpecPropGroup.properties!.splice(
-            xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecNiceValue"),
-            1
-        );
+        xScaleSpecPropsToRemove = xScaleSpecPropsToRemove.concat([
+            "xScaleSpecBase",
+            "xScaleSpecConstant",
+            "xScaleSpecRound",
+            "xScaleSpecMinType",
+            "xScaleSpecMinValue",
+            "xScaleSpecMaxType",
+            "xScaleSpecMaxValue",
+            "xScaleSpecStacked",
+            "xScaleSpecReverse",
+            "xScaleSpecClamp",
+            "xScaleSpecUseUTC",
+            "xScaleSpecNiceType",
+            "xScaleSpecNiceValue"
+        ]);
         if (_values.xScaleSpecFormatType === "native") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecFormatValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecFormatValue");
         }
         if (_values.xScaleSpecTimeMinType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMinValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecTimeMinValue");
         }
         if (_values.xScaleSpecTimeMaxType === "auto") {
-            xScaleSpecPropGroup.properties!.splice(
-                xScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "xScaleSpecTimeMaxValue"),
-                1
-            );
+            xScaleSpecPropsToRemove.push("xScaleSpecTimeMaxValue");
         }
     }
+    xScaleSpecPropGroup.properties = xScaleSpecPropGroup.properties!.filter(
+        prop => !xScaleSpecPropsToRemove.includes(prop.key)
+    );
 
+    // Y Scale Spec
     const yScaleSpecPropGroup: PropertyGroup = defaultProperties.find(
         propGroup => propGroup.caption === "Y Scale Spec"
     )!;
+    let yScaleSpecPropsToRemove: string[] = [];
     if (_values.yScaleSpecType === "linear") {
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecBase"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecConstant"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecRound"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecPrecision"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecUseUTC"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeNice"),
-            1
-        );
+        yScaleSpecPropsToRemove = yScaleSpecPropsToRemove.concat([
+            "yScaleSpecBase",
+            "yScaleSpecConstant",
+            "yScaleSpecRound",
+            "yScaleSpecFormatType",
+            "yScaleSpecFormatValue",
+            "yScaleSpecPrecision",
+            "yScaleSpecTimeMinType",
+            "yScaleSpecTimeMinValue",
+            "yScaleSpecTimeMaxType",
+            "yScaleSpecTimeMaxValue",
+            "yScaleSpecUseUTC",
+            "yScaleSpecTimeNice"
+        ]);
         if (_values.yScaleSpecMinType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMinValue");
         }
         if (_values.yScaleSpecMaxType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMaxValue");
         }
         if (_values.yScaleSpecNiceType === "true" || _values.yScaleSpecNiceType === "false") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecNiceValue");
         }
     } else if (_values.yScaleSpecType === "log") {
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecConstant"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecRound"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecPrecision"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecStacked"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecReverse"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecClamp"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecUseUTC"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeNice"),
-            1
-        );
+        yScaleSpecPropsToRemove = yScaleSpecPropsToRemove.concat([
+            "yScaleSpecConstant",
+            "yScaleSpecRound",
+            "yScaleSpecFormatType",
+            "yScaleSpecFormatValue",
+            "yScaleSpecPrecision",
+            "yScaleSpecTimeMinType",
+            "yScaleSpecTimeMinValue",
+            "yScaleSpecTimeMaxType",
+            "yScaleSpecTimeMaxValue",
+            "yScaleSpecStacked",
+            "yScaleSpecReverse",
+            "yScaleSpecClamp",
+            "yScaleSpecUseUTC",
+            "yScaleSpecNiceType",
+            "yScaleSpecNiceValue",
+            "yScaleSpecTimeNice"
+        ]);
         if (_values.yScaleSpecMinType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMinValue");
         }
         if (_values.yScaleSpecMaxType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMaxValue");
         }
     } else if (_values.yScaleSpecType === "symlog") {
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecBase"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecRound"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecPrecision"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecStacked"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecClamp"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecUseUTC"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeNice"),
-            1
-        );
+        yScaleSpecPropsToRemove = yScaleSpecPropsToRemove.concat([
+            "yScaleSpecBase",
+            "yScaleSpecRound",
+            "yScaleSpecFormatType",
+            "yScaleSpecFormatValue",
+            "yScaleSpecPrecision",
+            "yScaleSpecTimeMinType",
+            "yScaleSpecTimeMinValue",
+            "yScaleSpecTimeMaxType",
+            "yScaleSpecTimeMaxValue",
+            "yScaleSpecStacked",
+            "yScaleSpecClamp",
+            "yScaleSpecUseUTC",
+            "yScaleSpecNiceType",
+            "yScaleSpecNiceValue",
+            "yScaleSpecTimeNice"
+        ]);
         if (_values.yScaleSpecMinType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMinValue");
         }
         if (_values.yScaleSpecMaxType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecMaxValue");
         }
     } else if (_values.yScaleSpecType === "point") {
         yScaleSpecPropGroup.properties!.splice(1, yScaleSpecPropGroup.properties!.length - 2);
     } else if (_values.yScaleSpecType === "band") {
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecBase"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecConstant"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecPrecision"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecStacked"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecReverse"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecClamp"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecUseUTC"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeNice"),
-            1
-        );
+        yScaleSpecPropsToRemove = yScaleSpecPropsToRemove.concat([
+            "yScaleSpecBase",
+            "yScaleSpecConstant",
+            "yScaleSpecFormatType",
+            "yScaleSpecFormatValue",
+            "yScaleSpecPrecision",
+            "yScaleSpecMinType",
+            "yScaleSpecMinValue",
+            "yScaleSpecMaxType",
+            "yScaleSpecMaxValue",
+            "yScaleSpecTimeMinType",
+            "yScaleSpecTimeMinValue",
+            "yScaleSpecTimeMaxType",
+            "yScaleSpecTimeMaxValue",
+            "yScaleSpecStacked",
+            "yScaleSpecReverse",
+            "yScaleSpecClamp",
+            "yScaleSpecUseUTC",
+            "yScaleSpecNiceType",
+            "yScaleSpecNiceValue",
+            "yScaleSpecTimeNice"
+        ]);
     } else {
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecBase"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecConstant"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecRound"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMinValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecMaxValue"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecStacked"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecReverse"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecClamp"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceType"),
-            1
-        );
-        yScaleSpecPropGroup.properties!.splice(
-            yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecNiceValue"),
-            1
-        );
+        yScaleSpecPropsToRemove = yScaleSpecPropsToRemove.concat([
+            "yScaleSpecBase",
+            "yScaleSpecConstant",
+            "yScaleSpecRound",
+            "yScaleSpecMinType",
+            "yScaleSpecMinValue",
+            "yScaleSpecMaxType",
+            "yScaleSpecMaxValue",
+            "yScaleSpecStacked",
+            "yScaleSpecReverse",
+            "yScaleSpecClamp",
+            "yScaleSpecUseUTC",
+            "yScaleSpecNiceType",
+            "yScaleSpecNiceValue"
+        ]);
         if (_values.yScaleSpecFormatType === "native") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecFormatValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecFormatValue");
         }
         if (_values.yScaleSpecTimeMinType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMinValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecTimeMinValue");
         }
         if (_values.yScaleSpecTimeMaxType === "auto") {
-            yScaleSpecPropGroup.properties!.splice(
-                yScaleSpecPropGroup.properties!.findIndex(prop => prop.key === "yScaleSpecTimeMaxValue"),
-                1
-            );
+            yScaleSpecPropsToRemove.push("yScaleSpecTimeMaxValue");
         }
     }
+    yScaleSpecPropGroup.properties = yScaleSpecPropGroup.properties!.filter(
+        prop => !yScaleSpecPropsToRemove.includes(prop.key)
+    );
 
     return defaultProperties;
 }

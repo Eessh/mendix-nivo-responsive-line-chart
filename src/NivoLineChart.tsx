@@ -3,6 +3,7 @@ import NivoResponsiveLine, { TNivoResponsiveLineData, TNivoTheme } from "./compo
 import { NivoLineChartContainerProps } from "typings/NivoLineChartProps";
 import { ScaleSpec } from "@nivo/scales";
 import { LegendProps } from "@nivo/legends";
+import { CartesianMarkerProps } from "@nivo/core";
 
 import "./ui/NivoLineChart.css";
 
@@ -14,23 +15,30 @@ export function NivoLineChart(props: NivoLineChartContainerProps): ReactElement 
         return <span>{"Error in Chart Data (JSON): " + e.message}</span>;
     }
 
-    let parsedLegends: LegendProps[] | undefined;
-    try {
-        if (props.legends && props.legends.value) {
-            parsedLegends = JSON.parse(props.legends.value) as LegendProps[];
-        }
-    } catch (e) {
-        return <span>{"Error in Legend (JSON): " + e.message}</span>;
+    // Returning if no legends data
+    if (props.legendsType === "specify" && !props.legends?.value) {
+        return <span>{"Error in Legends JSON Data: No legends data!"}</span>;
     }
 
-    let parsedTheme: TNivoTheme | undefined;
+    let parsedMarkers: CartesianMarkerProps[] | undefined;
     try {
-        if (props.theme && props.theme.value) {
-            parsedTheme = JSON.parse(props.theme.value) as TNivoTheme;
-        }
+        parsedMarkers = props.markers?.value ? (JSON.parse(props.markers.value) as CartesianMarkerProps[]) : [];
     } catch (e) {
-        return <span>{"Theme (JSON): " + e.message}</span>;
+        return <span>{"Error in Markers (JSON): " + e.message}</span>;
     }
+
+    // Returning if no theme data
+    if (props.themeType === "specify" && !props.theme?.value) {
+        return <span>{"Error in Theme JSON Data: No theme data!"}</span>;
+    }
+
+    const getParsedLegends = (): LegendProps[] => {
+        return JSON.parse(props.legends!.value!);
+    };
+
+    const getParsedTheme = (): TNivoTheme => {
+        return JSON.parse(props.theme!.value!);
+    };
 
     const getXScaleSpec = (): ScaleSpec => {
         if (props.xScaleSpecType === "linear") {
@@ -143,7 +151,8 @@ export function NivoLineChart(props: NivoLineChartContainerProps): ReactElement 
     return (
         <NivoResponsiveLine
             data={parsedData}
-            theme={parsedTheme}
+            theme={props.themeType === "default" ? undefined : getParsedTheme()}
+            markers={parsedMarkers}
             margin={{
                 top: props.marginTop,
                 right: props.marginRight,
@@ -157,6 +166,7 @@ export function NivoLineChart(props: NivoLineChartContainerProps): ReactElement 
             enableTouchCrosshair={props.enableTouchCrosshair}
             enableGridX={props.enableGridX}
             enableGridY={props.enableGridY}
+            enableSlices={props.enableSlices === "no" ? false : props.enableSlices}
             enablePointLabel={props.enablePointLabel}
             pointLabel={props.pointLabel?.value}
             pointLabelYOffset={parseInt(props.pointLabelYOffset, 10)}
@@ -214,7 +224,10 @@ export function NivoLineChart(props: NivoLineChartContainerProps): ReactElement 
             }
             xScale={getXScaleSpec()}
             yScale={getYScaleSpec()}
-            legends={parsedLegends}
+            legends={
+                props.legendsType === "default" ? undefined : props.legendsType === "no" ? null : getParsedLegends()
+            }
+            animate={props.animate}
         />
     );
 }
