@@ -34,7 +34,6 @@ Will be coming in future :)
 <details>
     <summary>Theme</summary>
 
-    ```json
     {
         "background": "#ffffff",
         "text": {
@@ -145,13 +144,11 @@ Will be coming in future :)
             "tableCellValue": {}
         }
     }
-    ```
 </details>
 
 <details>
     <summary>Data</summary>
 
-    ```json
     [
         {
             "id": "japan",
@@ -424,14 +421,11 @@ Will be coming in future :)
             ]
         }
     ]
-    ```
-
 </details>
 
 <details>
     <summary>Legends</summary>
 
-    ```json
     [
         {
             "anchor": "bottom",
@@ -458,8 +452,6 @@ Will be coming in future :)
             ]
         }
     ]
-    ```
-
 </details>
 
 ## Development and contribution
