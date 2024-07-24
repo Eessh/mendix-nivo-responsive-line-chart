@@ -407,11 +407,7 @@ const NivoResponsiveLine = (props: NivoResponsiveLineProps): ReactElement => {
             enableGridX={props.enableGridX ?? DefaultProps.enableGridX}
             enableGridY={props.enableGridY ?? DefaultProps.enableGridY}
             legends={
-                props.legends === undefined
-                    ? DefaultProps.legends!
-                    : props.legends === null
-                    ? undefined
-                    : props.legends
+                props.legends === undefined ? DefaultProps.legends! : props.legends === null ? undefined : props.legends
             }
             enableSlices={props.enableSlices ?? DefaultProps.enableSlices}
             markers={props.markers}
